@@ -4,8 +4,8 @@ requires = ["poetry-core>=1.0.0"]
 
 [tool]
 [tool.poetry]
-authors = ["Your Name <you@example.com>"]
-description = ""
+authors = ["TheBayesian <baeyesian@gmail.com>", "Alexx <email@email.com>"]
+description = "This replit team is working on visualization and exploration of the 3n + 1 problem, aka the Collatz Conjecture."
 name = "repl_python3_3np1v1"
 version = "0.1.0"
 [tool.poetry.dependencies]

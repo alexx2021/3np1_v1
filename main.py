@@ -1,48 +1,50 @@
-# import numba as nb
+  # import numba as nb
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+from variables import getSize
 
-# there is a chat window xdddddddddddddddddddddddddd
+size = getSize()
 
 # @nb.njit()
 def find_3np1_chain_length(n):
     iterations = 1
     while n > 1:
-        if n % 2 == 0:
-            n = n/2
-        else:
-            n = 3*n + 1
+        is_even = n % 2 == 0
+        if is_even:
+            n = n / 2
+        if not is_even:  #odd number
+            n = 3 * n + 1
         iterations += 1
     return iterations
 
-size = 10000
 
-# for under 1m : highest reaches peak at   159424614880
-# for under 100m : highest reaches peak at 966616035460
-
-"""find_largest_n"""
+"""find_largest_chain_under_n"""
 # @nb.njit()#parallel = True)
 def find_biggest_chain_under(n):
-    max_chain = 1
+    max_chain_length = 1
     n_at_max_chain = 1
-    for i in range(1,n): #nb.prange(1,n):
-        new_chain = find_3np1_chain_length(i)
-        if new_chain > max_chain:
-            max_chain = new_chain
-            n_at_max_chain = i
+    for current_n in range(1, n):  #nb.prange(1,n):
+        new_chain_length = find_3np1_chain_length(current_n)
+        if new_chain_length > max_chain_length:
+            max_chain = new_chain_length
+            n_at_max_chain = current_n
     return max_chain, n_at_max_chain
 
+
 start = time.time()
-print(find_biggest_chain_under(size))
-print(time.time() - start)
+print(f'Largest chain length {find_biggest_chain_under(size)[0]} at number {find_biggest_chain_under(size)[1]}')
+print(f'Time elapsed: {round(time.time() - start, 4)}')
+
 
 """showarray stuff:"""
-arr = np.arange(1,size+1)
+arr = np.arange(1, size + 1)
 result_arr = np.zeros(size)
 
 for i in range(len(arr)):
     result_arr[i] = find_3np1_chain_length(arr[i])
 
-plt.scatter(arr, np.exp(result_arr))
+plt.scatter(arr, result_arr, np.ones(size))
+plt.xlabel('Number')
+plt.ylabel('Chain length')
 plt.show()
